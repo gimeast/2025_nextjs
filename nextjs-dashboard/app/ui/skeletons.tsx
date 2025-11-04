@@ -19,6 +19,7 @@ export function CardSkeleton() {
 }
 
 export function CardsSkeleton() {
+    console.log('CardsSkeleton??')
   return (
     <>
       <CardSkeleton />
@@ -30,6 +31,7 @@ export function CardsSkeleton() {
 }
 
 export function RevenueChartSkeleton() {
+    console.log('RevenueChartSkeleton??')
   return (
     <div className={`${shimmer} relative w-full overflow-hidden md:col-span-4`}>
       <div className="mb-4 h-8 w-36 rounded-md bg-gray-100" />
@@ -60,6 +62,7 @@ export function InvoiceSkeleton() {
 }
 
 export function LatestInvoicesSkeleton() {
+    console.log('LatestInvoicesSkeleton??')
   return (
     <div
       className={`${shimmer} relative flex w-full flex-col overflow-hidden md:col-span-4`}
