@@ -5,6 +5,11 @@ import { lusitana } from '@/app/ui/fonts';
 import {fetchCardData, fetchLatestInvoices, } from "@/app/lib/data";
 import {CardsSkeleton, LatestInvoicesSkeleton, RevenueChartSkeleton} from "@/app/ui/skeletons";
 import {Suspense} from "react";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+  title:'dashboard'
+}
 
 export default async function Page() {
     const {totalPaidInvoices, totalPendingInvoices, numberOfInvoices, numberOfCustomers} = await fetchCardData()
