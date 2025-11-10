@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Paging from "@/components/common/Paging";
 
 export default function TodoList({ data, queryObj }) {
   const { list, total } = data;
@@ -13,6 +14,7 @@ export default function TodoList({ data, queryObj }) {
           </li>
         ))}
       </ul>
+      <Paging totalCount={total} page={queryObj.get("page")} size={10} />
     </div>
   );
 }
