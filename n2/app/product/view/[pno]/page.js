@@ -1,3 +1,8 @@
+export async function generateStaticParams() {
+  const arr = [{ pno: "1" }, { pno: "2" }, { pno: "3" }];
+  return arr;
+}
+
 export default async function ProductViewPage({ params, searchParams }) {
   const param = await params;
 
