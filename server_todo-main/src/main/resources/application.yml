@@ -31,10 +31,10 @@ spring:
       max-file-size: 10MB
       max-request-size: 40MB
       enabled: true
-      location: /Users/zerock/nextex/images
+      location: /Users/kimdong-uk/Downloads/files
   web:
     resources:
-      static-locations: file:///Users/zerock/nextex/images
+      static-locations: file:///Users/kimdong-uk/Downloads/files
 #로그 설정   
 logging:
   level:
@@ -44,6 +44,6 @@ logging:
 org:
   zerock:
     upload:
-      folder: /Users/zerock/nextex/images
+      folder: /Users/kimdong-uk/Downloads/files
 
 

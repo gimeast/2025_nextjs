@@ -18,7 +18,7 @@ export default function Layout({ children }) {
                 목록
               </Link>
               <Link
-                href="/todo/register"
+                href="/todo/new"
                 className="px-4 py-2 rounded-md text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors font-medium"
               >
                 등록
