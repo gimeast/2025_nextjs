@@ -47,6 +47,19 @@ export default function TodoRead({ data, queryObj }) {
           </div>
         </div>
       </div>
+      {/* 버튼 그룹 */}
+      <div className="mt-6 flex justify-end space-x-4">
+        <Link href={`/todo/list?${queryObj.toString()}`}>
+          <button className="bg-gray-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">
+            목록으로
+          </button>
+        </Link>
+        <Link href={`/todo/edit/${data.tno}?${queryObj.toString()}`}>
+          <button className="bg-indigo-600 text-white font-semibold py-2 px-6 rounded-md hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            수정/삭제
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
