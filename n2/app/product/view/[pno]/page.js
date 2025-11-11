@@ -1,5 +1,7 @@
+import ProductView from "@/components/product/ProductView";
+
 export async function generateStaticParams() {
-  const arr = [{ pno: "1" }, { pno: "2" }, { pno: "3" }];
+  const arr = [{ pno: "1" }, { pno: "2" }, { pno: "4" }];
   return arr;
 }
 
@@ -18,6 +20,7 @@ export default async function ProductViewPage({ params, searchParams }) {
   return (
     <div>
       <div> Product View Page </div>
+      <ProductView product={product} />
     </div>
   );
 }

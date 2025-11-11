@@ -10,6 +10,21 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    // 'experimental' 아래에 serverActions를 정의해야 합니다.
+    serverActions: {
+      bodySizeLimit: '40mb', // 원하는 크기로 조절하세요 (예: '50mb', '100mb')
+    },
+  },
+  async redirects() {
+    return [
+      {
+        source: '/product', // 사용자가 접근하려는 경로
+        destination: '/product/catalog/1', // 리다이렉트될 경로
+        permanent: true, // 영구적인 리다이렉트 (308 Permanent Redirect)
+      },
+    ];
+  },
 };
 
 export default nextConfig;

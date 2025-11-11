@@ -15,22 +15,24 @@ export default function ProductCatalog({ products, total, current, size }) {
     <div>
       <ul>
         {products.map((product) => (
-          <li className="m-2 p-1 border" key={product.pno}>
-            <div>PNO: {product.pno}</div>
-            <div>NAME: {product.pname}</div>
-            <div>PRICE: {product.price} </div>
-            <div className="relative w-1/3 h-40">
-              {/* 부모 크기 제한 */}
-              <Image
-                src={`http://localhost:8080/s_${product.fileName}`}
-                alt={product.pname}
-                fill
-                style={{ objectFit: "cover" }}
-                sizes="33vw"
-                priority={true}
-              />
-            </div>
-          </li>
+          <Link href={`/product/view/${product.pno}`} key={product.pno}>
+            <li className="m-2 p-1 border">
+              <div>PNO: {product.pno}</div>
+              <div>NAME: {product.pname}</div>
+              <div>PRICE: {product.price} </div>
+              <div className="relative w-1/3 h-40">
+                {/* 부모 크기 제한 */}
+                <Image
+                  src={`http://localhost:8080/s_${product.fileName}`}
+                  alt={product.pname}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  sizes="33vw"
+                  priority={true}
+                />
+              </div>
+            </li>
+          </Link>
         ))}
       </ul>
       {hasPrev && <Link href={`/product/catalog/${current - 1}`}>Prev</Link>}
