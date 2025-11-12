@@ -10,33 +10,59 @@ export default function ProductCatalog({ products, total, current, size }) {
 
   const hasPrev = current !== 1;
   const hasNext = current !== Math.ceil(total / size);
+  const from = encodeURIComponent(`/product/catalog/${current}`);
 
   return (
-    <div>
-      <ul>
+    <div className="p-4 sm:p-6 md:p-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         {products.map((product) => (
-          <Link href={`/product/view/${product.pno}`} key={product.pno}>
-            <li className="m-2 p-1 border">
-              <div>PNO: {product.pno}</div>
-              <div>NAME: {product.pname}</div>
-              <div>PRICE: {product.price} </div>
-              <div className="relative w-1/3 h-40">
-                {/* 부모 크기 제한 */}
+          <div
+            key={product.pno}
+            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+          >
+            <Link href={`/product/view/${product.pno}?from=${from}`} className="flex flex-col items-center p-4">
+              {/* 이미지 영역: 1:1 비율 유지 */}
+              <div className="relative w-full h-0 pt-[100%] mb-4 rounded-md overflow-hidden">
                 <Image
                   src={`http://localhost:8080/s_${product.fileName}`}
                   alt={product.pname}
                   fill
                   style={{ objectFit: "cover" }}
-                  sizes="33vw"
+                  sizes="(max-width: 640px) 100vw, 50vw"
                   priority={true}
+                  className="rounded-md"
                 />
               </div>
-            </li>
-          </Link>
+              {/* 상품 정보 */}
+              <div className="text-center w-full">
+                <h3 className="text-lg font-semibold truncate text-gray-900">{product.pname}</h3>
+                <div className="text-sm text-gray-500">PNO: {product.pno}</div>
+                <div className="text-2xl font-bold text-blue-600 mt-2">₩{product.price.toLocaleString()}</div>
+              </div>
+            </Link>
+          </div>
         ))}
-      </ul>
-      {hasPrev && <Link href={`/product/catalog/${current - 1}`}>Prev</Link>}
-      {hasNext && <Link href={`/product/catalog/${current + 1}`}>Next</Link>}
+      </div>
+
+      <div className="flex justify-center mt-10 space-x-4">
+        {hasPrev && (
+          <Link
+            href={`/product/catalog/${current - 1}`}
+            className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-full text-gray-700 font-medium hover:bg-gray-100 transition-colors duration-200 shadow-sm"
+          >
+            이전
+          </Link>
+        )}
+
+        {hasNext && (
+          <Link
+            href={`/product/catalog/${current + 1}`}
+            className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-colors duration-200 shadow-sm"
+          >
+            다음
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

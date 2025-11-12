@@ -24,31 +24,35 @@ export default function ProductQueryList({ list, total, requestParam }) {
   const from = encodeURIComponent(`/product/query?${queryObj.toString()}`);
 
   return (
-    <div>
-      <div>Product Query List Component</div>
-      <ul>
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-bold mb-6">Product Query List</h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {list.map((product) => (
-          <li key={product.pno} className="m-2 p-2 border-2">
-            <Link href={`/product/view/${product.pno}?from=${from}`}>
-              <div>{product.pno} </div>
-              <div>
-                {product.pname} = {product.price}{" "}
-              </div>
-              <div className="relative aspect-[4/3] max-w-[300px]">
+          <div
+            key={product.pno}
+            className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden"
+          >
+            <Link href={`/product/view/${product.pno}?from=${from}`} className="block">
+              <div className="relative w-full aspect-[4/3]">
                 <Image
                   src={`http://localhost:8080/s_${product.fileName}`}
                   alt={product.pname}
                   fill
-                  sizes="(max-width: 768px) 100vw, 300px" // 추가된 부분
+                  sizes="(max-width: 768px) 100vw, 300px"
                   style={{ objectFit: "cover" }}
                   priority
                 />
               </div>
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-800 truncate">{product.pname}</h3>
+                <p className="text-xl font-bold text-blue-600 mt-2">₩{product.price.toLocaleString()}</p>
+              </div>
             </Link>
-          </li>
+          </div>
         ))}
-      </ul>
-      '
+      </div>
+
       <Paging url="/product/query" totalCount={total} queryObj={queryObj} />
     </div>
   );
