@@ -17,10 +17,13 @@ export default async function ProductViewPage({ params, searchParams }) {
 
   console.log(product);
 
+  const query = await searchParams;
+  const from = query.from ? decodeURIComponent(query.from) : "product/catalog/1";
+
   return (
     <div>
       <div> Product View Page </div>
-      <ProductView product={product} />
+      <ProductView product={product} from={from} />
     </div>
   );
 }

@@ -1,12 +1,14 @@
 import Image from "next/image";
+import Link from "next/link";
 
-export default function ProductView({ product }) {
+export default function ProductView({ product, from }) {
   if (!product) {
     return <div>Product not found</div>;
   }
 
   return (
     <div>
+      <Link href={from}>뒤로가기</Link>
       <div>Product View Component</div>
       <div>{product.pno}</div>
       <div>{product.pname}</div>
