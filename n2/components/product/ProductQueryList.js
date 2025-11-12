@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Paging from "@/components/common/Paging";
 
 export default function ProductQueryList({ list, total, requestParam }) {
   const page = requestParam.page;
@@ -25,7 +26,6 @@ export default function ProductQueryList({ list, total, requestParam }) {
   return (
     <div>
       <div>Product Query List Component</div>
-
       <ul>
         {list.map((product) => (
           <li key={product.pno} className="m-2 p-2 border-2">
@@ -48,6 +48,8 @@ export default function ProductQueryList({ list, total, requestParam }) {
           </li>
         ))}
       </ul>
+      '
+      <Paging url="/product/query" totalCount={total} queryObj={queryObj} />
     </div>
   );
 }
