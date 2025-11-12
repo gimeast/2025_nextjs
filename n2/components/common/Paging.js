@@ -23,7 +23,7 @@ export default function Paging({ url, totalCount, queryObj }) {
   const newQueryObj = new URLSearchParams();
   newQueryObj.set("size", size);
   newQueryObj.set("sort", sort);
-  newQueryObj.set("keyword", keyword);
+  keyword && newQueryObj.set("keyword", keyword);
 
   return (
     <div>
