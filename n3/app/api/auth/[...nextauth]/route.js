@@ -75,11 +75,14 @@ export const authOptions = {
           token.accessTokenExpires = Date.now() + 1000 * 60 * 60; //1h
         }
       }
-      return token;
+
+      if (token.accessTokenExpires && Date.now() < token.accessTokenExpires) {
+        return token;
+      }
+
+      return refreshAccessToken(token);
     },
     async session({ session, user, token }) {
-      console.log("session.........");
-
       session.user.id = token.id;
       session.user.role = token.role;
       session.user.email = token.email;
@@ -87,7 +90,9 @@ export const authOptions = {
 
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
-      session.user.expireTime = Date.now() + 1000 * 60 * 60; //1h
+      session.user.accessTokenExpires = token.accessTokenExpires; //1h
+
+      console.log("session.........", session);
       return session;
     },
   },
@@ -96,6 +101,35 @@ export const authOptions = {
     signOut: "/account/signout",
   },
 };
+
+async function refreshAccessToken(token) {
+  console.log("refreshAccessToken");
+  try {
+    const res = await fetch("http://localhost:8080/api/accounts/refresh", {
+      method: "POST",
+      body: JSON.stringify({ refreshToken: token.refreshToken }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const refreshedUser = await res.json();
+    if (!res.ok) {
+      throw new Error("Failed to refresh token");
+    }
+
+    token.id = refreshedUser.email;
+    token.role = refreshedUser.role;
+    token.email = refreshedUser.email;
+    token.name = refreshedUser.nickname;
+    token.accessToken = refreshedUser.accessToken;
+    token.refreshToken = refreshedUser.refreshToken;
+
+    token.accessTokenExpires = Date.now() + 1000 * 60 * 60; // 1시간으로 재설정
+    return token;
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+    return { ...token, error: "RefreshAccessTokenError" };
+  }
+}
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
