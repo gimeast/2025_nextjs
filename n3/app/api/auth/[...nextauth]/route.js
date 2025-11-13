@@ -91,6 +91,10 @@ export const authOptions = {
       return session;
     },
   },
+  pages: {
+    signIn: "/account/signin",
+    signOut: "/account/signout",
+  },
 };
 
 const handler = NextAuth(authOptions);

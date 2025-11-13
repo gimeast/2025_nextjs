@@ -1,22 +1,14 @@
 "use client";
 
 import { postProduct } from "@/actions/productActions";
-import { useActionState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useActionState } from "react";
+import { useAuthCheck } from "@/hooks/useAuthCheck";
 
 export default function ProductAdd() {
   const [state, action, isPending] = useActionState(postProduct, { message: "", result: "" });
-  const { data: session, status: sessionStatus } = useSession();
-  const router = useRouter();
+  const { session } = useAuthCheck();
 
-  console.log("product > add > page > session, sessionStatus", session, sessionStatus);
-
-  useEffect(() => {
-    if (sessionStatus === "unauthenticated") {
-      router.push("/api/auth/signin");
-    }
-  }, [sessionStatus]);
+  console.log("product > add > page > session", session);
 
   return (
     <div className="flex flex-col items-center justify-center p-6 bg-gray-100 min-h-screen">

@@ -1,10 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
 
-export default function ProductView({ product, from }) {
+export default async function ProductView({ product, from }) {
   if (!product) {
     return <div>Product not found</div>;
   }
+
+  const session = await getServerSession();
 
   return (
     <div className="flex flex-col items-center p-6 bg-gray-50 min-h-screen">
@@ -60,9 +63,23 @@ export default function ProductView({ product, from }) {
           </p>
 
           <div className="pt-4">
-            <button className="w-full px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200">
-              구매하기
-            </button>
+            {session ? ( // Conditionally render the button based on the server session
+              <button className="w-full px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200">
+                구매하기
+              </button>
+            ) : (
+              <button
+                disabled
+                className="w-full px-8 py-3 bg-gray-400 text-white font-semibold rounded-lg cursor-not-allowed"
+              >
+                로그인 후 구매 가능
+              </button>
+            )}
+            {session?.user?.email === product.writer && (
+              <button className="w-full px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200">
+                <Link href={`/product/edit/${product.pno}?from=${encodeURIComponent(from)}`}>수정하기</Link>
+              </button>
+            )}
           </div>
         </div>
       </div>
