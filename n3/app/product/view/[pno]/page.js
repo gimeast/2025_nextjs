@@ -12,7 +12,7 @@ export default async function ProductViewPage({ params, searchParams }) {
 
   console.log("pno", pno);
 
-  const res = await fetch(`http://localhost:8080/api/products/${pno}`, { next: { revalidate: 120 } });
+  const res = await fetch(`${process.env.API_SERVER_HOST}/api/products/${pno}`, { next: { revalidate: 120 } });
   const product = await res.json();
 
   console.log(product);

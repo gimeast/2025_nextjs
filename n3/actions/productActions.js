@@ -69,7 +69,7 @@ export const putProduct = async (prevState, formData) => {
     });
   }
   // Make the fetch request
-  const response = await fetch(`http://localhost:8080/api/products/${pno}`, {
+  const response = await fetch(`${process.env.API_SERVER_HOST}/api/products/${pno}`, {
     method: "PUT",
     body: updatedFormData,
   });
@@ -90,7 +90,7 @@ export const deleteProduct = async (prevState, formData) => {
 
   console.log("deleteProduct called with pno:", pno);
 
-  const response = await fetch(`http://localhost:8080/api/products/${pno}`, {
+  const response = await fetch(`${process.env.API_SERVER_HOST}/api/products/${pno}`, {
     method: "DELETE",
   });
 

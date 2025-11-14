@@ -17,7 +17,7 @@ export default async function ProductQueryPage({ params, searchParams }) {
     condition.append("keyword", keywordStr);
   }
 
-  const res = await fetch(`http://localhost:8080/api/products/list?${condition.toString()}`, {
+  const res = await fetch(`${process.env.API_SERVER_HOST}/api/products/list?${condition.toString()}`, {
     method: "GET",
     cache: "no-store",
   });

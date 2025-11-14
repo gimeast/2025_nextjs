@@ -64,7 +64,7 @@ export default function ProductEdit({ product, from }) {
             {oldFiles.map((fileName) => (
               <li key={fileName} className="relative w-48 h-48 mr-4 mb-4">
                 <Image
-                  src={`http://localhost:8080/${fileName}`}
+                  src={`${process.env.API_SERVER_HOST}/${fileName}`}
                   alt={product.pname}
                   fill
                   style={{ objectFit: "cover" }}

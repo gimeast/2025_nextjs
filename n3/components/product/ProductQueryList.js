@@ -36,7 +36,7 @@ export default function ProductQueryList({ list, total, requestParam }) {
             <Link href={`/product/view/${product.pno}?from=${from}`} className="block">
               <div className="relative w-full aspect-[4/3]">
                 <Image
-                  src={`http://localhost:8080/s_${product.fileName}`}
+                  src={`${process.env.API_SERVER_HOST}/s_${product.fileName}`}
                   alt={product.pname}
                   fill
                   sizes="(max-width: 768px) 100vw, 300px"

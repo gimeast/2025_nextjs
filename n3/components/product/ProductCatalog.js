@@ -24,7 +24,7 @@ export default function ProductCatalog({ products, total, current, size }) {
               {/* 이미지 영역: 1:1 비율 유지 */}
               <div className="relative w-full h-0 pt-[100%] mb-4 rounded-md overflow-hidden">
                 <Image
-                  src={`http://localhost:8080/s_${product.fileName}`}
+                  src={`${process.env.API_SERVER_HOST}/s_${product.fileName}`}
                   alt={product.pname}
                   fill
                   style={{ objectFit: "cover" }}

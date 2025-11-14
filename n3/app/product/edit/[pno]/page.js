@@ -5,7 +5,7 @@ export default async function ProductEditPage({ params, searchParams }) {
   const query = await searchParams;
   const from = query.from ? decodeURIComponent(query.from) : "/product/category/1";
 
-  const res = await fetch(`http://localhost:8080/api/products/${pno}`, { method: "GET", chache: "no-store" });
+  const res = await fetch(`${process.env.API_SERVER_HOST}/api/products/${pno}`, { method: "GET", chache: "no-store" });
   const product = await res.json();
   console.log(product);
 

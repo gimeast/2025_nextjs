@@ -13,7 +13,7 @@ export const authOptions = {
       async authorize(credentials, req) {
         console.log("route.js > credentials > ", credentials);
 
-        const res = await fetch("http://localhost:8080/api/accounts/signin", {
+        const res = await fetch(`${process.env.API_SERVER_HOST}/api/accounts/signin`, {
           method: "POST",
           body: JSON.stringify({ username: credentials.username, password: credentials.password }),
           headers: { "Content-Type": "application/json" },
@@ -40,7 +40,7 @@ export const authOptions = {
     async jwt({ token, account, profile, user }) {
       //kakao
       if (account?.provider === "kakao" && profile) {
-        const res = await fetch("http://localhost:8080/api/accounts/social", {
+        const res = await fetch(`${process.env.API_SERVER_HOST}/api/accounts/social`, {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -105,7 +105,7 @@ export const authOptions = {
 async function refreshAccessToken(token) {
   console.log("refreshAccessToken");
   try {
-    const res = await fetch("http://localhost:8080/api/accounts/refresh", {
+    const res = await fetch(`${process.env.API_SERVER_HOST}/api/accounts/refresh`, {
       method: "POST",
       body: JSON.stringify({ refreshToken: token.refreshToken }),
       headers: { "Content-Type": "application/json" },

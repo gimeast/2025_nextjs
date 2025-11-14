@@ -1,7 +1,7 @@
 import ProductCatalog from "@/components/product/ProductCatalog";
 
 export async function generateStaticParams() {
-  const res = await fetch(`http://localhost:8080/api/products/countCatalog?size=4`);
+  const res = await fetch(`${process.env.API_SERVER_HOST}/api/products/countCatalog?size=4`);
   const pageCount = await res.json();
   const arr = [];
   for (let i = 1; i <= pageCount; i++) {
@@ -15,7 +15,7 @@ export default async function ProductCatalogPage({ params, searchParams }) {
   const { page = "1" } = await params;
   const size = "4";
 
-  const res = await fetch(`http://localhost:8080/api/products/list?page=${page}&size=${size}`, {
+  const res = await fetch(`${process.env.API_SERVER_HOST}/api/products/list?page=${page}&size=${size}`, {
     next: { revalidate: 60 },
   });
 
