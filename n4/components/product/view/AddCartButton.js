@@ -4,6 +4,7 @@ import { useAuthCheck } from "@/hooks/useAuthCheck";
 import { useState } from "react";
 import AddCartModal from "@/components/product/view/AddCartModal";
 import { useRouter } from "next/navigation";
+import { mutate } from "swr";
 
 export default function AddCartButton({ pno }) {
   const { session } = useAuthCheck();
@@ -23,14 +24,19 @@ export default function AddCartButton({ pno }) {
       headers: { "Content-Type": "application/json" },
     });
 
-    const result = await res.json();
+    if (!res.ok) {
+      throw new Error("장바구니 추가에 실패했습니다.");
+    }
 
+    const result = await res.json();
     console.log("product > view AddCartButton.js > result", result);
 
     setShow(true);
+
+    await mutate("/api/cart/list");
   };
 
-  const closeModal = (value) => {
+  const closeModal = async (value) => {
     setShow(false);
 
     if (value === "c") {

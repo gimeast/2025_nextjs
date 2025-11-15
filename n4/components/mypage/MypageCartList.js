@@ -1,45 +1,35 @@
 "use client";
 
+import useSWR from "swr";
+import { cartListFetcher } from "@/lib/cartListUtil";
 import { useAuthCheck } from "@/hooks/useAuthCheck";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import CartItem from "@/components/mypage/item/CartItem";
 
 export default function MyPageCartList() {
   const { session } = useAuthCheck(true);
-  const [cartItems, setCartItems] = useState([]);
+  const { data: cartItems } = useSWR("/api/cart/list", cartListFetcher, { revalidateIfStale: false });
 
-  useEffect(() => {
-    if (session?.user?.email) {
-      fetch("/api/cart/list", { method: "GET" }).then((res) => {
-        res.json().then((serverItems) => {
-          console.log(serverItems);
-          setCartItems(() => serverItems);
-        });
-      });
-    }
-  }, [session]);
+  // Add the loading state
+  const isLoading = !cartItems && session?.user?.email;
+  if (isLoading) {
+    return <div className="flex justify-center items-center h-screen">Loading cart items...</div>;
+  }
+  // Add the empty cart state
+  if (cartItems && cartItems.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-screen flex-col text-center p-4">
+        <h2 className="text-2xl font-semibold mb-4">Your cart is empty.</h2>
+        <p className="text-gray-600">Start shopping to add items to your cart!</p>
+      </div>
+    );
+  }
   return (
-    <div>
-      <div>
-        <div>Cart Items {cartItems.length}</div>
-        <ul>
-          {cartItems.map((cartItem) => (
-            <li key={cartItem.cno} className="border-2 p-1 m-1">
-              <div>CNO: {cartItem.cno}</div>
-              <div>PNO: {cartItem.pno}</div>
-              <div>PNAME: {cartItem.pname}</div>
-              <div>PRICE: {cartItem.price}</div>
-              <div>QTY: {cartItem.quantity}</div>
-              <div>
-                <Image
-                  src={`http://localhost:8080/s_${cartItem.fileName}`}
-                  alt={cartItem.pname}
-                  width={100} // Add the width here
-                  height={100} // Add the height here
-                  priority
-                />
-              </div>
-            </li>
+    <div className="container mx-auto p-4">
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-semibold mb-4">Cart ({cartItems?.length})</h2>
+        <ul className="space-y-4">
+          {cartItems?.map((cartItem) => (
+            <CartItem cartItem={cartItem} key={cartItem.cno} />
           ))}
         </ul>
       </div>
