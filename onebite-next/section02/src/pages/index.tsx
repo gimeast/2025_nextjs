@@ -2,25 +2,31 @@ import style from './index.module.css';
 import { ReactNode, useEffect } from 'react';
 import SearchableLayout from '@/components/searchable-layout';
 import BookItem from '@/components/book-item';
-import books from '@/mock/books.json';
 import { InferGetServerSidePropsType } from 'next';
+import fetchBooks from '@/lib/fetch-books';
+import fetchRandomBooks from '@/lib/fetch-random-books';
 
-export const getServerSideProps = () => {
+export const getServerSideProps = async () => {
   // 컴포넌트보다 먼저 실행되어 컴포넌트에 필요한 데이터를 불러오는 함수
-  const data = 'hello';
-  console.log('SSR 실행!');
+  const [allBooks, recoBooks] = await Promise.all([
+    fetchBooks(),
+    fetchRandomBooks(),
+  ]);
 
   return {
     props: {
-      data,
+      allBooks,
+      recoBooks,
     },
   };
 };
 
 const Home = ({
-  data,
+  allBooks,
+  recoBooks,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log('data:', data);
+  console.log('allBooks:', allBooks);
+  console.log('recoBooks:', recoBooks);
 
   useEffect(() => {
     console.log(window);
@@ -30,13 +36,13 @@ const Home = ({
     <div className={style.container}>
       <section>
         <h3>지금 추천하는 도서</h3>
-        {books.map((book) => (
+        {recoBooks.map((book) => (
           <BookItem key={book.id} {...book} />
         ))}
       </section>
       <section>
         <h3>등록된 모든 도서</h3>
-        {books.map((book) => (
+        {allBooks.map((book) => (
           <BookItem key={book.id} {...book} />
         ))}
       </section>
