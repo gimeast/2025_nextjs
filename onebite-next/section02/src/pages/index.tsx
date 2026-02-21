@@ -1,10 +1,31 @@
 import style from './index.module.css';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import SearchableLayout from '@/components/searchable-layout';
 import BookItem from '@/components/book-item';
 import books from '@/mock/books.json';
+import { InferGetServerSidePropsType } from 'next';
 
-const Home = () => {
+export const getServerSideProps = () => {
+  // 컴포넌트보다 먼저 실행되어 컴포넌트에 필요한 데이터를 불러오는 함수
+  const data = 'hello';
+  console.log('SSR 실행!');
+
+  return {
+    props: {
+      data,
+    },
+  };
+};
+
+const Home = ({
+  data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  console.log('data:', data);
+
+  useEffect(() => {
+    console.log(window);
+  }, []);
+
   return (
     <div className={style.container}>
       <section>
