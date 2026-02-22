@@ -1,6 +1,7 @@
 import style from './[id].module.css';
 import { GetServerSidePropsContext, InferGetStaticPropsType } from 'next';
 import fetchOneBook from '@/lib/fetchOneBook';
+import { useRouter } from 'next/router';
 
 export const getStaticPaths = () => {
   return {
@@ -9,7 +10,9 @@ export const getStaticPaths = () => {
       { params: { id: '2' } },
       { params: { id: '3' } },
     ],
-    fallback: false,
+    // fallback: false, // 404 Not Found
+    // fallback: 'blocking', // 생성되지 않은 경로 요청 시, 서버에서 getStaticProps를 실행하고 완료될 때까지 사용자는 대기한다. 완성된 HTML을 반환한 뒤 정적 파일로 캐시되어 이후 같은 경로는 SSG 방식으로 동작한다.
+    fallback: true, // 생성되지 않은 경로 요청 시, props가 비어있는 fallback 페이지를 즉시 반환하고, 백그라운드에서 getStaticProps를 실행한 뒤 완료되면 클라이언트에 데이터를 전달하여 리렌더링한다. 이후 같은 경로는 SSG 방식으로 동작한다.
   };
 };
 
@@ -17,12 +20,22 @@ export const getStaticProps = async (context: GetServerSidePropsContext) => {
   const id = context.params!.id;
   const book = await fetchOneBook(Number(id));
 
+  if (!book) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: { book },
   };
 };
 
 const Page = ({ book }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const router = useRouter();
+
+  if (router.isFallback) return '로딩중입니다.';
+
   if (!book) return '문제가 발생했습니다 다시 시도하세요';
 
   const { title, subTitle, description, author, publisher, coverImgUrl } = book;
