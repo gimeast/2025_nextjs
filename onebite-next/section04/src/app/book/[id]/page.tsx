@@ -1,5 +1,12 @@
 import style from './page.module.css';
 import { BookData } from '@/types';
+import { notFound } from 'next/navigation';
+
+// export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return [{ id: '1' }, { id: '2' }, { id: '3' }];
+}
 
 export default async function Page({
   params,
@@ -12,7 +19,12 @@ export default async function Page({
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${id}`,
   );
 
-  if (!response.ok) return <div>오류가 발생했습니다...</div>;
+  if (!response.ok) {
+    if (response.status === 404) {
+      notFound();
+    }
+    return <div>오류가 발생했습니다...</div>;
+  }
 
   const { title, subTitle, description, author, publisher, coverImgUrl } =
     (await response.json()) as BookData;
