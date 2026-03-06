@@ -71,6 +71,35 @@ async function ReviewList({ bookId }: { bookId: string }) {
   );
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${id}`,
+  );
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  const { title, subTitle, description, author, publisher, coverImgUrl } =
+    (await response.json()) as BookData;
+
+  return {
+    title: `${title} - 한입북스`,
+    description: `${description}`,
+    openGraph: {
+      title: `${title} - 한입북스`,
+      description: `${description}`,
+      images: [coverImgUrl],
+    },
+  };
+}
+
 export default async function Page({
   params,
 }: {
