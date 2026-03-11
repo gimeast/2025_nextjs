@@ -15,7 +15,6 @@ function AuthLayout() {
 }
 
 function App() {
-  const isActive = true;
   return (
     <Routes>
       <Route path="/" element={<IndexPage />} />
