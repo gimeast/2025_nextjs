@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Link } from "react-router";
 import { useState } from "react";
-import { useSignUp } from "@/hools/mutations/use-sign-up.ts";
+import { useSignUp } from "@/hooks/mutations/use-sign-up.ts";
 
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
