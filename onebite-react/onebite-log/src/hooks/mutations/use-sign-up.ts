@@ -1,8 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "@/api/auth.ts";
+import type { UseMutationCallback } from "@/types.ts";
 
-export function useSignUp() {
+export function useSignUp(callbacks?: UseMutationCallback) {
   return useMutation({
     mutationFn: signUp,
+    onError: (error) => {
+      callbacks?.onError?.(error);
+    },
   });
 }

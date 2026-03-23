@@ -6,19 +6,28 @@ import { useSignInWithPassword } from "@/hooks/mutations/use-sign-in-with-passwo
 import gitHubLogo from "@/assets/github-mark.svg";
 import { useSignInWithOauth } from "@/hooks/mutations/use-sign-in-with-oauth.ts";
 import { toast } from "sonner";
+import { generateErrorMessage } from "@/lib/error.ts";
 
 const SignInPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { mutate: signInWithPassword } = useSignInWithPassword({
-    onError: (error) => {
-      toast.error(error.message, { position: "top-center" });
+  const { mutate: signInWithPassword, isPending: isSignInWithPasswordPending } =
+    useSignInWithPassword({
+      onError: (error) => {
+        const message = generateErrorMessage(error);
+        toast.error(message, { position: "top-center" });
 
-      setPassword("");
-    },
-  });
-  const { mutate: signInWithGitHub } = useSignInWithOauth();
+        setPassword("");
+      },
+    });
+  const { mutate: signInWithGitHub, isPending: isSignInWithOauthPending } =
+    useSignInWithOauth({
+      onError: (error) => {
+        const message = generateErrorMessage(error);
+        toast.error(message, { position: "top-center" });
+      },
+    });
 
   const handleSingInWithPasswordClick = () => {
     if (email.trim() === "" || password.trim() === "") return;
@@ -28,6 +37,8 @@ const SignInPage = () => {
   const handleSignInWithGitHubClick = () => {
     signInWithGitHub("github");
   };
+
+  const isPending = isSignInWithPasswordPending || isSignInWithOauthPending;
 
   return (
     <div className="flex flex-col gap-8">
@@ -39,6 +50,7 @@ const SignInPage = () => {
           placeholder="example@abc.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          disabled={isPending}
         />
         <Input
           className="py-6"
@@ -46,16 +58,22 @@ const SignInPage = () => {
           placeholder="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          disabled={isPending}
         />
       </div>
       <div className="flex flex-col gap-2">
-        <Button className="w-full" onClick={handleSingInWithPasswordClick}>
+        <Button
+          className="w-full"
+          onClick={handleSingInWithPasswordClick}
+          disabled={isPending}
+        >
           로그인
         </Button>
         <Button
           className="w-full"
           variant="outline"
           onClick={handleSignInWithGitHubClick}
+          disabled={isPending}
         >
           <img className="h-4 w-4" src={gitHubLogo} alt="" />
           GitHub 계정으로 로그인
