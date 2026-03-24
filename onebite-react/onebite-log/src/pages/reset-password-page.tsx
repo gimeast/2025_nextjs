@@ -19,7 +19,7 @@ const ResetPasswordPage = () => {
         navigate("/", { replace: true });
       },
       onError: (error) => {
-        const message = generateErrorMessage(error.message);
+        const message = generateErrorMessage(error);
         toast.error(message, { position: "top-center" });
         setPassword("");
       },
