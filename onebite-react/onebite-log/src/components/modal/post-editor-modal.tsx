@@ -10,6 +10,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel.tsx";
+import { useSession } from "@/store/session.ts";
 
 type Image = {
   file: File;
@@ -17,6 +18,7 @@ type Image = {
 };
 
 const PostEditorModal = () => {
+  const session = useSession();
   const { isOpen, close } = usePostEditorModal();
 
   const [content, setContent] = useState("");
@@ -62,7 +64,11 @@ const PostEditorModal = () => {
 
   const handleCreatePostClick = () => {
     if (content.trim() === "") return;
-    createPost(content);
+    createPost({
+      content,
+      images: images.map((image) => image.file),
+      userId: session!.user.id,
+    });
   };
 
   const handleDeleteImage = (image: Image) => {
